@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stefan XatSpace Design</title>
+    <!-- Fuentes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&family=Satisfy&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Paleta de Colores Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --primary-gradient: linear-gradient(135deg, #0060FF 0%, #00c6ff 100%);
+            --btn-hover: linear-gradient(135deg, #00c6ff 0%, #0060FF 100%);
+            
+            --text-main: #ffffff;
+            --text-secondary: #e0e0e0;
+            --font-main: 'Roboto', sans-serif;
+            --font-cursive: 'Pacifico', cursive;
+            --font-title: 'Satisfy', cursive;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Ocultamos el cursor por defecto para usar el personalizado */
+        }
+
+        /* CURSOR PERSONALIZADO */
+        .custom-cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            box-shadow: 0 0 10px #00c6ff, inset 0 0 10px #00c6ff;
+            backdrop-filter: blur(2px);
+        }
+
+        .custom-cursor.hover {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 198, 255, 0.2);
+            border-color: #00c6ff;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72);
+            background-size: 300% 300%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            /* SCROLL GENERAL: Cambiado de hidden a auto para permitir scroll si es necesario */
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto; 
+            padding-top: 65px; 
+            /* Personalización del scrollbar del body */
+            scrollbar-width: thin;
+            scrollbar-color: #00c6ff #051937;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Layout Principal */
+        .app-container {
+            display: flex;
+            /* Altura dinámica: se ajusta a la pantalla pero permite crecer */
+            height: calc(100vh - 65px);
+            min-height: 600px; /* Evita que se aplaste demasiado en pantallas chatas */
+            width: 98%;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            box-shadow: var(--glass-shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 300px;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--glass-border);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .avatar-container {
+            width: 160px;
+            height: 160px;
+            min-height: 160px;
+            margin-top: 20px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.6);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .avatar-container:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-color: #fff;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar h2 {
+            font-family: var(--font-cursive);
+            font-size: 2.2em;
+            margin: 20px 0 5px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            background: -webkit-linear-gradient(#fff, #84cfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .sidebar p {
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+        }
+
+        .divider-line {
+            width: 80%;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+            margin: 15px 0;
+        }
+
+        .sidebar-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: none; /* Mantener cursor personalizado */
+        }
+
+        .sidebar-btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+            border-color: #fff;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* --- AJUSTE DEL BANNER --- */
+        .header-banner {
+            width: 100%;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.4); 
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            min-height: 120px; 
+        }
+        
+        .header-banner img {
+            width: 100%;
+            height: auto;
+            max-height: 280px; 
+            object-fit: contain; 
+            display: block;
+        }
+
+        .header-text {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+
+        .header-text h1 {
+            font-family: var(--font-title);
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.8);
+            margin-bottom: 5px;
+        }
+        
+        .header-text p {
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            padding: 10px 20px 0;
+            gap: 10px;
+            background: rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .nav-link {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.9em;
+            cursor: none; /* Mantener cursor personalizado */
+            transition: all 0.3s;
+            border-radius: 15px 15px 0 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid transparent;
+            border-bottom: none;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+
+        .nav-link.active {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            border: 1px solid var(--glass-border);
+            border-bottom: none;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        }
+
+        .gallery-area {
+            flex: 1 1 auto;
+            height: 0px; 
+            overflow-y: auto;
+            padding: 25px;
+            padding-bottom: 150px;
+            position: relative;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .grid-container {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 20px;
+            animation: fadeIn 0.5s ease-out;
+            width: 100%;
+        }
+
+        .grid-container.active {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gif-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            aspect-ratio: 1 / 1.25;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: none; /* Mantener cursor personalizado */
+        }
+
+        .gif-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            z-index: 5;
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 10px 20px rgba(0, 198, 255, 0.4);
+        }
+
+        .gif-card img {
+            max-width: 90%;
+            max-height: 70%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+        }
+
+        .gif-name {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 0;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-size: 0.75em;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .divider-title {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.5em;
+            margin: 30px 0 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 0 0 10px #00c6ff;
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { 
+            background: rgba(255,255,255,0.4); 
+            border-radius: 5px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.6); }
+
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 768px) {
+            body { 
+                /* En móvil permitimos scroll natural */
+                overflow-x: hidden;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+                cursor: auto; /* Restaurar cursor nativo en touch */
+            }
+            .custom-cursor { display: none; /* Ocultar cursor en móvil */ }
+            * { cursor: auto; }
+
+            .app-container {
+                flex-direction: column;
+                height: auto; /* Altura automática para scrollear toda la página */
+                min-height: calc(100vh - 65px);
+                width: 100%;
+                border-radius: 0;
+                overflow: visible; /* Importante para que el scroll del body funcione */
+            }
+            
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+                flex-shrink: 0;
+            }
+            
+            .main-content {
+                height: auto;
+                overflow: visible;
+            }
+            
+            .gallery-area {
+                overflow: visible;
+                height: auto;
+                flex: none; /* No tratar de llenar espacio, solo ser lo que es */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Elemento del Cursor -->
+<div class="custom-cursor"></div>
+
+<div class="app-container">
+    
+    <!-- 
+       🛑 ZONA DE EDICIÓN: BARRA LATERAL (PERFIL) 🛑 
+       Aquí puedes cambiar tu avatar y los enlaces de tus botones
+    -->
+    <aside class="sidebar">
+        <div class="avatar-container">
+            <!-- Cambia el link en 'src' para actualizar tu avatar -->
+            <img src="https://i.postimg.cc/nz3kDmv3/Cobra.gif" alt="Avatar">
+        </div>
+        <h2>𝓢𝓽𝓮𝓯𝓪𝓷</h2>
+        <div class="divider-line"></div>
+        <p>ID: 1539053925</p>
+        <p>𝕯𝖊𝖘𝖎𝖌𝖓𝖊𝖗 | 𝖌𝖎𝖋𝖘</p>
+        <div class="divider-line"></div>
+        
+        <div style="width: 100%; margin-top: 10px;">
+            <!-- Modifica los 'href' para cambiar los links de los botones -->
+            <a href="https://www.flickr.com/photos/mccobra/albums/72157710162960711" target="_blank" class="sidebar-btn">👉 𝕱𝖔𝖓𝖉𝖔𝖘 👈</a>
+            <a href="https://www.flickr.com/photos/mccobra/albums/72157710162942311" target="_blank" class="sidebar-btn">👉 𝕻𝖈𝕭𝖆𝖈𝖐𝖘 👈</a>
+            <a href="https://xat.com/radiohitsnrg" target="_blank" class="sidebar-btn">👉 Radio Hits NRG 👈</a>
+            <a href="https://xat.com/Fondos" target="_blank" class="sidebar-btn">👉 Chat Fondos 👈</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <!-- 
+           🛑 ZONA DE EDICIÓN: BANNER SUPERIOR 🛑 
+           Instrucción: Sustituye el enlace dentro de src="" por tu nuevo enlace.
+           IMPORTANTE: Usa el "Enlace Directo" que termina en .gif o .jpg
+        -->
+        <div class="header-banner">
+            <img src="https://postimg.cc/svqtqGCQ" alt="Banner" onerror="this.src='https://i.postimg.cc/YCCM4QX3/Untitled-2-Recovered.gif'">
+        </div>
+
+        <div class="header-text">
+            <h1>𝖂𝖊𝖑𝖈𝖔𝖒𝖊 𝖒𝖞 𝖃𝖆𝖙𝕾𝖕𝖆𝖈𝖊</h1>
+            <p>🆅🅰🅽🅳 , 🆂🅴🅻🅻 , 🆅🅴🅽🅳🅾 (𝓖𝓲𝓯, 𝕱𝖔𝖓𝖉𝖔 𝖃𝖆𝖙, 𝓟𝓬𝓫𝓪𝓬𝓴)</p>
+        </div>
+
+        <nav class="nav-tabs">
+            <div id="btn-new" class="nav-link active" onclick="openTab('tab-new', 'btn-new')">🔥 Nuevos</div>
+            <div id="btn-after" class="nav-link" onclick="openTab('tab-after', 'btn-after')">🌟 After Effects</div>
+            <div id="btn-coll" class="nav-link" onclick="openTab('tab-coll', 'btn-coll')">💎 Colección</div>
+        </nav>
+
+        <div class="gallery-area">
+            
+            <!-- 
+               🛑 ZONA DE EDICIÓN: GALERÍA "NUEVOS" 🛑 
+               Copia y pega la línea completa <div class="gif-card">...</div> para agregar más.
+            -->
+            <div id="tab-new" class="grid-container active">
+                <div class="gif-card"><div class="gif-name">new49</div><img src="https://i.postimg.cc/sxYR2v6J/49.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new50</div><img src="https://i.postimg.cc/KcBbfHGg/50.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new51</div><img src="https://i.postimg.cc/Kvb2HDjp/51.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new52</div><img src="https://i.postimg.cc/fTvNnS0z/52.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new53</div><img src="https://i.postimg.cc/mg2GbZQQ/53.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new44</div><img src="https://i.postimg.cc/1zsrsp28/44.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new45</div><img src="https://i.postimg.cc/fbCjLVQB/45.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new46</div><img src="https://i.postimg.cc/FRKbJh9m/46.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new47</div><img src="https://i.postimg.cc/mD6YYKD9/47.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new48</div><img src="https://i.postimg.cc/zvbn0pbc/48.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new39</div><img src="https://i.postimg.cc/TwMRb785/264.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new40</div><img src="https://i.postimg.cc/wTT9DRr2/265.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new41</div><img src="https://i.postimg.cc/mZVsZ2rH/266.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new42</div><img src="https://i.postimg.cc/Kv4dZPV6/267.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new43</div><img src="https://i.postimg.cc/Y9h14SHC/263.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new24</div><img src="https://i.postimg.cc/C1vCFt6n/24.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new25</div><img src="https://i.postimg.cc/fbfjPkcK/25.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new26</div><img src="https://i.postimg.cc/YCgx1djT/26.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new27</div><img src="https://i.postimg.cc/4Nj57D4z/27.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new28</div><img src="https://i.postimg.cc/xTX5dfQf/28.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new29</div><img src="https://i.postimg.cc/wMm1SGKp/29.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new30</div><img src="https://i.postimg.cc/V6TSZcVg/30.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new31</div><img src="https://i.postimg.cc/50jYmtnj/31.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new32</div><img src="https://i.postimg.cc/6QM4RZVD/32.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new33</div><img src="https://i.postimg.cc/fbz0JCdc/33.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new18</div><img src="https://i.postimg.cc/J0tLgXYm/18.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new19</div><img src="https://i.postimg.cc/VLrwWjbW/19.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new20</div><img src="https://i.postimg.cc/25wNSGPr/20.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new21</div><img src="https://i.postimg.cc/02wgwPLt/21.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new22</div><img src="https://i.postimg.cc/XYfTsxNd/22.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new23</div><img src="https://i.postimg.cc/sxGL740B/23.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new1</div><img src="https://i.postimg.cc/0NSGpyGy/208.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new2</div><img src="https://i.postimg.cc/DZ2W8vBD/209.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new3</div><img src="https://i.postimg.cc/0QczST4N/210.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new4</div><img src="https://i.postimg.cc/RhYqsc45/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new5</div><img src="https://i.postimg.cc/ZK9W9DxT/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new6</div><img src="https://i.postimg.cc/dtzLGm5G/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new7</div><img src="https://i.postimg.cc/Qd1Vm9zw/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new8</div><img src="https://i.postimg.cc/YS70s2K9/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new9</div><img src="https://i.postimg.cc/Px3qJmLp/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new10</div><img src="https://i.postimg.cc/PJC5wPZ6/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new11</div><img src="https://i.postimg.cc/KjCvrxDm/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new-𝟏2</div><img src="https://i.postimg.cc/KcWzyDSC/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new13</div><img src="https://i.postimg.cc/8PrCkfTc/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new14</div><img src="https://i.postimg.cc/qvVvNB7L/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new15</div><img src="https://i.postimg.cc/pdPVB0z5/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new16</div><img src="https://i.postimg.cc/G25cddNv/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">new17</div><img src="https://i.postimg.cc/52VQZS8b/anigif.gif" /></div>
+            </div>
+
+            <!-- 
+               🛑 ZONA DE EDICIÓN: GALERÍA "AFTER EFFECTS" 🛑 
+            -->
+            <div id="tab-after" class="grid-container">
+                <div class="gif-card"><div class="gif-name">after1</div><img src="https://i.postimg.cc/Ss7sXpbn/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after2</div><img src="https://i.postimg.cc/G2z8KYbm/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after3</div><img src="https://i.postimg.cc/tJT1MTgt/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after4</div><img src="https://i.postimg.cc/D0MWkTJV/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after5</div><img src="https://i.postimg.cc/nVR9Qvdd/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after6</div><img src="https://i.postimg.cc/FsYdb78h/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after7</div><img src="https://i.postimg.cc/L622Kh2S/7.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after8</div><img src="https://i.postimg.cc/NMGLKMRq/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after9</div><img src="https://i.postimg.cc/zDc3fqB6/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after10</div><img src="https://i.postimg.cc/Sx0sWVcG/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after11</div><img src="https://i.postimg.cc/Tw0QKkLC/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-𝟏1</div><img src="https://i.postimg.cc/9fLCNBwK/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-13</div><img src="https://i.postimg.cc/zGjy8KRS/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-14</div><img src="https://i.postimg.cc/x10dx8Fk/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after15</div><img src="https://i.postimg.cc/28CmmJdM/11.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after16</div><img src="https://i.postimg.cc/mkwvtL3q/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after17</div><img src="https://i.postimg.cc/gcHFMs9D/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">affter18</div><img src="https://i.postimg.cc/8Py8GCzf/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter19</div><img src="https://i.postimg.cc/sg1kgRM6/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter20</div><img src="https://i.postimg.cc/QdPRBn5X/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter21</div><img src="https://i.postimg.cc/rpr75CC5/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter22</div><img src="https://i.postimg.cc/j5YmcwZm/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter23</div><img src="https://i.postimg.cc/63VSmWP3/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter24</div><img src="https://i.postimg.cc/MHW42kkY/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter25</div><img src="https://i.postimg.cc/8ctYTyNg/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter26</div><img src="https://i.postimg.cc/VsRp9NMZ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter27</div><img src="https://i.postimg.cc/MK3L4r9y/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter28</div><img src="https://i.postimg.cc/nh6PV9br/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter29</div><img src="https://i.postimg.cc/pTvczNdt/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter30</div><img src="https://i.postimg.cc/D0yCpqsj/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter31</div><img src="https://i.postimg.cc/MKFgFK56/aaa.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter32</div><img src="https://i.postimg.cc/4NqF124n/bbb.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter33</div><img src="https://i.postimg.cc/CLBcdCC0/ccc.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter34</div><img src="https://i.postimg.cc/LsNtxhkv/ddd.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter35</div><img src="https://i.postimg.cc/65n1YL80/eee.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter36</div><img src="https://i.postimg.cc/XNwzgkGg/ggg.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter37</div><img src="https://i.postimg.cc/pX1z5yYt/hhh.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter38</div><img src="https://i.postimg.cc/8zJWRDtf/iii.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter39</div><img src="https://i.postimg.cc/vZJnXjNq/jjj.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter40</div><img src="https://i.postimg.cc/qRLCJ7MS/kkk.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter41</div><img src="https://i.postimg.cc/vTZxcd4B/aqaq.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter42</div><img src="https://i.postimg.cc/g0ZZ56tH/42.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter43</div><img src="https://i.postimg.cc/sXChRDtd/43.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affte44</div><img src="https://i.postimg.cc/RhMJNpSg/44.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter45</div><img src="https://i.postimg.cc/XqQGFKX4/45.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter46</div><img src="https://i.postimg.cc/VLkbwhH6/46.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter47</div><img src="https://i.postimg.cc/PrVv5MBM/47.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter48</div><img src="https://i.postimg.cc/bvJJHN3x/48.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter49</div><img src="https://i.postimg.cc/6pD7dp62/50.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter50</div><img src="https://i.postimg.cc/9X1nsmpR/50.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter51</div><img src="https://i.postimg.cc/SNsvhBTZ/51.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter52</div><img src="https://i.postimg.cc/3JcbJtz3/52.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter53</div><img src="https://i.postimg.cc/nL8RqCH5/53.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter54</div><img src="https://i.postimg.cc/NMBdPS2k/54.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter55</div><img src="https://i.postimg.cc/hG9CscvG/55.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter56</div><img src="https://i.postimg.cc/nrL0nmks/56.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter57</div><img src="https://i.postimg.cc/RVNX8chy/57.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter58</div><img src="https://i.postimg.cc/kXzfdBt4/58.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter59</div><img src="https://i.postimg.cc/j5hBYXB7/59.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter60</div><img src="https://i.postimg.cc/BbYyXvSZ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter61</div><img src="https://i.postimg.cc/W4GH08NH/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter62</div><img src="https://i.postimg.cc/c4tTQhTB/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter63</div><img src="https://i.postimg.cc/mgQwnrvc/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter64</div><img src="https://i.postimg.cc/wBqGcJ1x/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter65</div><img src="https://i.postimg.cc/Nj4NMMp3/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter66</div><img src="https://i.postimg.cc/7ZmV4RLD/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter67</div><img src="https://i.postimg.cc/fL0jxTfT/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter68</div><img src="https://i.postimg.cc/4y66SL0D/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter69</div><img src="https://i.postimg.cc/nrrVP8mP/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter70</div><img src="https://i.postimg.cc/7hRPvBMY/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter71</div><img src="https://i.postimg.cc/c1kL8Hyy/71.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter72</div><img src="https://i.postimg.cc/gJpzyX44/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter73</div><img src="https://i.postimg.cc/Fsz9xQgt/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter74</div><img src="https://i.postimg.cc/rwtMvCPQ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter75</div><img src="https://i.postimg.cc/pTPv5NX6/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">Affter76</div><img src="https://i.postimg.cc/g0YtvG88/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-77</div><img src="https://i.postimg.cc/1508fJYd/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-78</div><img src="https://i.postimg.cc/mgbtMCvg/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-79</div><img src="https://i.postimg.cc/RZXqTqmQ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-80</div><img src="https://i.postimg.cc/nLWz65CX/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-81</div><img src="https://i.postimg.cc/fTvbwkVn/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-82</div><img src="https://i.postimg.cc/gkcWHs2Q/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-83</div><img src="https://i.postimg.cc/7ZfrpL7N/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-84</div><img src="https://i.postimg.cc/LsPK80xY/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-85</div><img src="https://i.postimg.cc/wv5ChR89/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-86</div><img src="https://i.postimg.cc/HnBFNGkK/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-87</div><img src="https://i.postimg.cc/4xKjWSkL/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-88</div><img src="https://i.postimg.cc/bwKWW9qz/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-89</div><img src="https://i.postimg.cc/85bYF8M5/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-90</div><img src="https://i.postimg.cc/PJ3F4m6n/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-91</div><img src="https://i.postimg.cc/Y2bVMHtD/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-92</div><img src="https://i.postimg.cc/J4F2H5Db/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-93</div><img src="https://i.postimg.cc/Mpjr7fVg/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-94</div><img src="https://i.postimg.cc/8CQXtkbc/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-95</div><img src="https://i.postimg.cc/RhFgNWvs/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-96</div><img src="https://i.postimg.cc/SRvD8msy/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-97</div><img src="https://i.postimg.cc/qBbmWxG9/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-98</div><img src="https://i.postimg.cc/bNZ6PSCd/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-99</div><img src="https://i.postimg.cc/LX4TbJg9/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-100</div><img src="https://i.postimg.cc/hv61vMyv/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-101</div><img src="https://i.postimg.cc/Y2s3dqr7/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-102</div><img src="https://i.postimg.cc/gkLKQFjZ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-103</div><img src="https://i.postimg.cc/SKdLCmTw/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-104</div><img src="https://i.postimg.cc/fLbcv11k/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">after-105</div><img src="https://i.postimg.cc/Y2Z61nRq/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">affter106</div><img src="https://i.postimg.cc/Sx7cbyhJ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">affter107</div><img src="https://i.postimg.cc/QM81XR8S/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">affter108</div><img src="https://i.postimg.cc/zfxW303N/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">affter109</div><img src="https://i.postimg.cc/L51ZCSD4/anigif.gif" /></div>
+                
+                <div class="divider-title">BluffTitler</div>
+                
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-𝟏</div><img src="https://i.postimg.cc/65n1YL80/eee.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-2</div><img src="https://i.postimg.cc/L4TG5qRq/anigif-2.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-3</div><img src="https://i.postimg.cc/zG9c6KwQ/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-4</div><img src="https://i.postimg.cc/W3VfbVH6/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-5</div><img src="https://i.postimg.cc/JhNPFgzy/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-6</div><img src="https://i.postimg.cc/bYCL41pR/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-7</div><img src="https://i.postimg.cc/3rcCt7FS/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-8</div><img src="https://i.postimg.cc/Jzw3Wqgj/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-9</div><img src="https://i.postimg.cc/Yqx9NvsK/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-10</div><img src="https://i.postimg.cc/rmpx9Y02/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-11</div><img src="https://i.postimg.cc/kMzhYLQc/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-12</div><img src="https://i.postimg.cc/2SFc66Pc/anigif.gif" /></div>
+                <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-13</div><img src="https://i.postimg.cc/ZKZZD9Fj/anigif.gif" /></div>
+            </div>
+
+            <!-- 
+               🛑 ZONA DE EDICIÓN: GALERÍA "COLECCIÓN" 🛑 
+            -->
+            <div id="tab-coll" class="grid-container">
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-14</div><img src="https://i.postimg.cc/g2Dsp7Z1/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-15</div><img src="https://i.postimg.cc/MG3YMjtD/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-16</div><img src="https://i.postimg.cc/kMbyGGSQ/anigif.giff" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-17</div><img src="https://i.postimg.cc/kgnNTyps/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-18</div><img src="https://i.postimg.cc/13JG2qxQ/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-19</div><img src="https://i.postimg.cc/HLNQs1sv/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-20</div><img src="https://i.postimg.cc/5NJ8t3bJ/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-21</div><img src="https://i.postimg.cc/bvGj21pY/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-22</div><img src="https://i.postimg.cc/XNhyPBVR/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-23</div><img src="https://i.postimg.cc/25217VcX/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-24</div><img src="https://i.postimg.cc/Zn8qMnYN/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-25</div><img src="https://i.postimg.cc/SNC77fWT/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-26</div><img src="https://i.postimg.cc/pdXfvN34/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-27</div><img src="https://i.postimg.cc/CKPjLPg1/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-28</div><img src="https://i.postimg.cc/4yttPXh7/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-29</div><img src="https://i.postimg.cc/RCfnjVNq/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-30</div><img src="https://i.postimg.cc/8khjZK06/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-31</div><img src="https://i.postimg.cc/NFqMDmtY/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-32</div><img src="https://i.postimg.cc/c1w6H97J/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-33</div><img src="https://i.postimg.cc/Sx2HkyxP/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-34</div><img src="https://i.postimg.cc/Cx3XKWZx/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-35</div><img src="https://i.postimg.cc/qv3DWjmV/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-36</div><img src="https://i.postimg.cc/6qqYc07P/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-37</div><img src="https://i.postimg.cc/CMrv1WXp/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-38</div><img src="https://i.postimg.cc/bwkLmdJq/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-39</div><img src="https://i.postimg.cc/9fBbjSZS/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-40</div><img src="https://i.postimg.cc/vm61r6Hv/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-41</div><img src="https://i.postimg.cc/RVNvJx07/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-42</div><img src="https://i.postimg.cc/pX4RDc9g/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-43</div><img src="https://i.postimg.cc/WzcfNrtY/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-44</div><img src="https://i.postimg.cc/yYc33RxX/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-45</div><img src="https://i.postimg.cc/Qd7mtVGR/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-46</div><img src="https://i.postimg.cc/8knmmLT2/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-47</div><img src="https://i.postimg.cc/Bn253y23/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-48</div><img src="https://i.postimg.cc/s2yYgcJh/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-49</div><img src="https://i.postimg.cc/cHLfQL21/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-50</div><img src="https://i.postimg.cc/B67HNGfT/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-51</div><img src="https://i.postimg.cc/L4TG5qRq/anigif-2.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-52</div><img src="https://i.postimg.cc/zG9c6KwQ/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-53</div><img src="https://i.postimg.cc/W3VfbVH6/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-54</div><img src="https://i.postimg.cc/JhNPFgzy/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-55</div><img src="https://i.postimg.cc/bYCL41pR/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-56</div><img src="https://i.postimg.cc/76B16jG9/1.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-57</div><img src="https://i.postimg.cc/0jbYJZ7s/2.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-58</div><img src="https://i.postimg.cc/T1FrjmcW/3.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-59</div><img src="https://i.postimg.cc/jqFQr0rd/4.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-60</div><img src="https://i.postimg.cc/5NQ547x5/a.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-61</div><img src="https://i.postimg.cc/Gm0FHF2W/6.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-62</div><img src="https://i.postimg.cc/ZKZZD9Fj/anigif.gif" /></div>
+                 
+                 <div class="divider-title">Extras</div>
+                 
+                 <div class="gif-card"><div class="gif-name">affter1</div><img src="https://i.postimg.cc/wvP5Bf6K/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">affter2</div><img src="https://i.postimg.cc/SKnJKyjs/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">affter3</div><img src="https://i.postimg.cc/0Qg22DLW/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">affter4</div><img src="https://i.postimg.cc/6qtWCw6C/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">affter5</div><img src="https://i.postimg.cc/6qtWCw6C/anigif.gif" /></div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Aseguramos que la pestaña por defecto esté activa al cargar
+        const defaultTab = document.getElementById('tab-new');
+        if(defaultTab && !defaultTab.classList.contains('active')) {
+            defaultTab.classList.add('active');
+        }
+
+        // Lógica del cursor personalizado
+        const cursor = document.querySelector('.custom-cursor');
+        
+        // Mover el cursor
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 768) { // Solo en desktop
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
+        });
+
+        // Efecto hover en elementos interactivos
+        const interactables = document.querySelectorAll('a, .nav-link, .gif-card, .sidebar-btn, .avatar-container');
+        
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Ocultar cursor al salir de la ventana
+        document.addEventListener('mouseout', () => {
+            cursor.style.opacity = '0';
+        });
+        document.addEventListener('mouseover', () => {
+            cursor.style.opacity = '1';
+        });
+    });
+
+    function openTab(tabId, btnId) {
+        // 1. Ocultar todos los contenedores
+        const containers = document.querySelectorAll('.grid-container');
+        containers.forEach(el => el.classList.remove('active'));
+        
+        // 2. Desactivar todos los botones
+        const links = document.querySelectorAll('.nav-link');
+        links.forEach(el => el.classList.remove('active'));
+        
+        // 3. Activar el contenedor seleccionado
+        const selectedTab = document.getElementById(tabId);
+        if(selectedTab) selectedTab.classList.add('active');
+        
+        // 4. Activar el botón seleccionado
+        const selectedBtn = document.getElementById(btnId);
+        if(selectedBtn) selectedBtn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
