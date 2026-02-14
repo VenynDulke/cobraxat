@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stefan XatSpace Design</title>
-    <!-- Fuentes de Google Fonts -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&family=Satisfy&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Paleta de Colores Glassmorphism */
+            /* Glassmorphism Color Palette */
             --glass-bg: rgba(255, 255, 255, 0.15);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
@@ -27,10 +27,63 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Ocultamos el cursor por defecto para usar el personalizado */
+            cursor: none; /* Hide default cursor to use custom one */
         }
 
-        /* CURSOR PERSONALIZADO */
+        /* --- SPLASH SCREEN STYLES (NUEVO) --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://xatimg.com/image/cI8NIjzBWYYP.gif') no-repeat center center;
+            background-size: cover;
+            z-index: 9998; /* Just below custom cursor (9999) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #enter-btn {
+            padding: 20px 50px;
+            font-size: 2.5rem;
+            font-family: var(--font-cursive);
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00c6ff;
+            border-radius: 50px;
+            box-shadow: 0 0 20px #00c6ff, inset 0 0 20px #00c6ff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: none; /* Uses custom cursor */
+            backdrop-filter: blur(5px);
+            animation: pulseBtn 2s infinite ease-in-out;
+            transition: all 0.3s ease;
+        }
+
+        #enter-btn:hover {
+            background: rgba(0, 198, 255, 0.3);
+            box-shadow: 0 0 40px #00c6ff, inset 0 0 30px #00c6ff;
+            transform: scale(1.05);
+            text-shadow: 0 0 10px #fff;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); box-shadow: 0 0 20px #00c6ff; }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px #00c6ff, 0 0 20px #fff; }
+            100% { transform: scale(1); box-shadow: 0 0 20px #00c6ff; }
+        }
+        /* ------------------------------------ */
+
+        /* CUSTOM CURSOR */
         .custom-cursor {
             position: fixed;
             width: 30px;
@@ -58,12 +111,10 @@
             background-size: 300% 300%;
             animation: gradientBG 15s ease infinite;
             color: var(--text-main);
-            /* SCROLL GENERAL: Cambiado de hidden a auto para permitir scroll si es necesario */
             height: 100vh;
             overflow-x: hidden;
             overflow-y: auto; 
             padding-top: 65px; 
-            /* Personalización del scrollbar del body */
             scrollbar-width: thin;
             scrollbar-color: #00c6ff #051937;
         }
@@ -74,12 +125,11 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Layout Principal */
+        /* Main Layout */
         .app-container {
             display: flex;
-            /* Altura dinámica: se ajusta a la pantalla pero permite crecer */
             height: calc(100vh - 65px);
-            min-height: 600px; /* Evita que se aplaste demasiado en pantallas chatas */
+            min-height: 600px;
             width: 98%;
             max-width: 1400px;
             margin: 0 auto;
@@ -178,7 +228,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            cursor: none; /* Mantener cursor personalizado */
+            cursor: none;
         }
 
         .sidebar-btn:hover {
@@ -188,7 +238,7 @@
             border-color: #fff;
         }
 
-        /* --- CONTENIDO PRINCIPAL --- */
+        /* --- MAIN CONTENT --- */
         .main-content {
             flex: 1;
             display: flex;
@@ -198,9 +248,6 @@
             height: 100%;
             overflow: hidden;
         }
-
-        /* (Eliminados estilos de header-banner y header-text ya que se quitaron del HTML)
-        */
 
         .nav-tabs {
             display: flex;
@@ -219,7 +266,7 @@
             text-transform: uppercase;
             font-weight: bold;
             font-size: 0.9em;
-            cursor: none; /* Mantener cursor personalizado */
+            cursor: none;
             transition: all 0.3s;
             border-radius: 15px 15px 0 0;
             background: rgba(255,255,255,0.05);
@@ -243,6 +290,7 @@
 
         .gallery-area {
             flex: 1 1 auto;
+            /* Flex scrolling trick */
             height: 0px; 
             overflow-y: auto;
             padding: 25px;
@@ -282,7 +330,7 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            cursor: none; /* Mantener cursor personalizado */
+            cursor: none;
         }
 
         .gif-card:hover {
@@ -341,23 +389,22 @@
         /* RESPONSIVE MOBILE */
         @media (max-width: 768px) {
             body { 
-                /* En móvil permitimos scroll natural */
                 overflow-x: hidden;
                 overflow-y: auto;
                 height: auto;
                 min-height: 100vh;
-                cursor: auto; /* Restaurar cursor nativo en touch */
+                cursor: auto; /* Restore native cursor on touch */
             }
-            .custom-cursor { display: none; /* Ocultar cursor en móvil */ }
+            .custom-cursor { display: none; }
             * { cursor: auto; }
 
             .app-container {
                 flex-direction: column;
-                height: auto; /* Altura automática para scrollear toda la página */
+                height: auto;
                 min-height: calc(100vh - 65px);
                 width: 100%;
                 border-radius: 0;
-                overflow: visible; /* Importante para que el scroll del body funcione */
+                overflow: visible;
             }
             
             .sidebar {
@@ -376,25 +423,35 @@
             .gallery-area {
                 overflow: visible;
                 height: auto;
-                flex: none; /* No tratar de llenar espacio, solo ser lo que es */
+                flex: none;
+            }
+            
+            /* Splash mobile adjustments */
+            #enter-btn {
+                font-size: 1.8rem;
+                padding: 15px 35px;
+                letter-spacing: 2px;
             }
         }
     </style>
 </head>
 <body>
 
-<!-- Elemento del Cursor -->
+<!-- Cursor Element -->
 <div class="custom-cursor"></div>
+
+<!-- SPLASH SCREEN (NUEVO) -->
+<div id="splash-screen">
+    <button id="enter-btn">Enter</button>
+</div>
 
 <div class="app-container">
     
     <!-- 
-       🛑 ZONA DE EDICIÓN: BARRA LATERAL (PERFIL) 🛑 
-       Aquí puedes cambiar tu avatar y los enlaces de tus botones
+       🛑 EDIT ZONE: SIDEBAR (PROFILE) 🛑 
     -->
     <aside class="sidebar">
         <div class="avatar-container">
-            <!-- Cambia el link en 'src' para actualizar tu avatar -->
             <img src="https://i.postimg.cc/nz3kDmv3/Cobra.gif" alt="Avatar">
         </div>
         <h2>𝓒𝓸𝓫𝓻𝓪</h2>
@@ -404,7 +461,6 @@
         <div class="divider-line"></div>
         
         <div style="width: 100%; margin-top: 10px;">
-            <!-- Modifica los 'href' para cambiar los links de los botones -->
             <a href="https://www.flickr.com/photos/mccobra/albums/72157710162960711" target="_blank" class="sidebar-btn">👉 𝕱𝖔𝖓𝖉𝖔𝖘 👈</a>
             <a href="https://www.flickr.com/photos/mccobra/albums/72157710162942311" target="_blank" class="sidebar-btn">👉 𝕻𝖈𝕭𝖆𝖈𝖐𝖘 👈</a>
             <a href="https://xat.com/radiohitsnrg" target="_blank" class="sidebar-btn">👉 Radio Hits NRG 👈</a>
@@ -414,8 +470,6 @@
 
     <main class="main-content">
         
-        <!-- SE ELIMINÓ EL BANNER Y EL TEXTO DE BIENVENIDA AQUÍ -->
-
         <nav class="nav-tabs">
             <div id="btn-new" class="nav-link active" onclick="openTab('tab-new', 'btn-new')">🔥 Nuevos</div>
             <div id="btn-after" class="nav-link" onclick="openTab('tab-after', 'btn-after')">🌟 After Effects</div>
@@ -425,8 +479,7 @@
         <div class="gallery-area">
             
             <!-- 
-               🛑 ZONA DE EDICIÓN: GALERÍA "NUEVOS" 🛑 
-               Copia y pega la línea completa <div class="gif-card">...</div> para agregar más.
+               🛑 EDIT ZONE: "NUEVOS" GALLERY 🛑 
             -->
             <div id="tab-new" class="grid-container active">
                 <div class="gif-card"><div class="gif-name">new49</div><img src="https://i.postimg.cc/sxYR2v6J/49.gif" /></div>
@@ -480,7 +533,7 @@
             </div>
 
             <!-- 
-               🛑 ZONA DE EDICIÓN: GALERÍA "AFTER EFFECTS" 🛑 
+               🛑 EDIT ZONE: "AFTER EFFECTS" GALLERY 🛑 
             -->
             <div id="tab-after" class="grid-container">
                 <div class="gif-card"><div class="gif-name">after1</div><img src="https://i.postimg.cc/Ss7sXpbn/anigif.gif" /></div>
@@ -611,7 +664,7 @@
             </div>
 
             <!-- 
-               🛑 ZONA DE EDICIÓN: GALERÍA "COLECCIÓN" 🛑 
+               🛑 EDIT ZONE: "COLECCIÓN" GALLERY 🛑 
             -->
             <div id="tab-coll" class="grid-container">
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-14</div><img src="https://i.postimg.cc/g2Dsp7Z1/anigif.gif" /></div>
@@ -623,7 +676,7 @@
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-20</div><img src="https://i.postimg.cc/5NJ8t3bJ/anigif.gif" /></div>
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-21</div><img src="https://i.postimg.cc/bvGj21pY/anigif.gif" /></div>
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-22</div><img src="https://i.postimg.cc/XNhyPBVR/anigif.gif" /></div>
-                 <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-23</div><img src="https://i.postimg.cc/25217VcX/anigif.gif" /></div>
+                 <div class="gif-card"><div class="gif-name">𝕲𝖎-23</div><img src="https://i.postimg.cc/25217VcX/anigif.gif" /></div>
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-24</div><img src="https://i.postimg.cc/Zn8qMnYN/anigif.gif" /></div>
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-25</div><img src="https://i.postimg.cc/SNC77fWT/anigif.gif" /></div>
                  <div class="gif-card"><div class="gif-name">𝕲𝖎𝖋-26</div><img src="https://i.postimg.cc/pdXfvN34/anigif.gif" /></div>
@@ -679,25 +732,38 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Aseguramos que la pestaña por defecto esté activa al cargar
+        // --- SPLASH SCREEN LOGIC (NUEVO) ---
+        const splash = document.getElementById('splash-screen');
+        const enterBtn = document.getElementById('enter-btn');
+        
+        if(enterBtn && splash) {
+            enterBtn.addEventListener('click', () => {
+                splash.classList.add('hidden');
+                // Optional: Play audio here if desired
+            });
+        }
+        // ----------------------------------
+
+        // Ensure default tab is active on load
         const defaultTab = document.getElementById('tab-new');
         if(defaultTab && !defaultTab.classList.contains('active')) {
             defaultTab.classList.add('active');
         }
 
-        // Lógica del cursor personalizado
+        // Custom Cursor Logic
         const cursor = document.querySelector('.custom-cursor');
         
-        // Mover el cursor
+        // Move cursor
         document.addEventListener('mousemove', (e) => {
-            if (window.innerWidth > 768) { // Solo en desktop
+            if (window.innerWidth > 768) { // Desktop only
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
             }
         });
 
-        // Efecto hover en elementos interactivos
-        const interactables = document.querySelectorAll('a, .nav-link, .gif-card, .sidebar-btn, .avatar-container');
+        // Hover effect on interactable elements
+        // Added #enter-btn to the list
+        const interactables = document.querySelectorAll('a, .nav-link, .gif-card, .sidebar-btn, .avatar-container, #enter-btn');
         
         interactables.forEach(el => {
             el.addEventListener('mouseenter', () => {
@@ -708,7 +774,7 @@
             });
         });
 
-        // Ocultar cursor al salir de la ventana
+        // Hide cursor when leaving window
         document.addEventListener('mouseout', () => {
             cursor.style.opacity = '0';
         });
@@ -718,19 +784,19 @@
     });
 
     function openTab(tabId, btnId) {
-        // 1. Ocultar todos los contenedores
+        // 1. Hide all containers
         const containers = document.querySelectorAll('.grid-container');
         containers.forEach(el => el.classList.remove('active'));
         
-        // 2. Desactivar todos los botones
+        // 2. Deactivate all buttons
         const links = document.querySelectorAll('.nav-link');
         links.forEach(el => el.classList.remove('active'));
         
-        // 3. Activar el contenedor seleccionado
+        // 3. Activate selected container
         const selectedTab = document.getElementById(tabId);
         if(selectedTab) selectedTab.classList.add('active');
         
-        // 4. Activar el botón seleccionado
+        // 4. Activate selected button
         const selectedBtn = document.getElementById(btnId);
         if(selectedBtn) selectedBtn.classList.add('active');
     }
